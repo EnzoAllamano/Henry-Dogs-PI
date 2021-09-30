@@ -1,4 +1,16 @@
-body {
+:root{
+  --button-color1: wheat;
+  --backgrounds-color1: rgba(214, 150, 125, 0.24);
+}
+
+*{
+  font-family: "Righteous", cursive;
+}
+
+body {  
+  background-image: url("./img/background_landing-page.jpg");
+  background-size:cover;
+  background-repeat:repeat-y;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -10,4 +22,9 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+*{
+  padding: 0px;
+  margin: 0px;
 }
