@@ -4,13 +4,13 @@ const GET_ALL_DOGS = "GET_ALL_DOGS",
   GET_DOG_DETAIL = "GET_DOG_DETAIL",
   NEXT_PAGE = "NEXT_PAGE",
   PREV_PAGE = "PREV_PAGE",
-  SWITCH_DARK = "SWITCH_DARK"
+  SWITCH_DARK = "SWITCH_DARK";
 
 export function getAllDogs() {
   return function (dispatch) {
-    fetch(local + "/dogs")
-      .then((data) => data.json())
-      .then((dataJ) => dispatch({ type: GET_ALL_DOGS, payload: dataJ }));
+      fetch("https://api.thedogapi.com/v1/breeds")
+        .then((data) => data.json())
+        .then((dataJ) => dispatch({ type: GET_ALL_DOGS, payload: dataJ }));
   };
 }
 
@@ -45,5 +45,5 @@ export default {
   GET_DOG_DETAIL,
   NEXT_PAGE,
   PREV_PAGE,
-  SWITCH_DARK
+  SWITCH_DARK,
 };

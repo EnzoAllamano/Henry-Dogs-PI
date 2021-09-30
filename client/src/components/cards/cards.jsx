@@ -1,43 +1,21 @@
-import React from "react";
-import { connect } from "react-redux";
+// import React, { useEffect } from "react";
 import Card from "../eachCard/card.jsx";
-import { Component } from "react";
-import * as actionCreators from "../../actions";
-import { bindActionCreators } from "redux";
+import { useSelector } from "react-redux";
+// import * as actionCreators from "../../actions";
+// import { useDispatch } from "react-redux";
+// import store from "../../store/index.js";
 
-// export default function Cards(){
-//     return (
-//         <div>
-//             <Card></Card>
-//         </div>
-//     )
-// }
-
-export class Cards extends Component {
-  constructor(props) {
-    super(props);
-  }
-  generateDogsCards() {
-    return this.props.dogs ? (
-      <Card dog={this.props.dogs[0]} />
+export default function Cards() {
+  const dogsRedux = useSelector(state => state.dogs)
+  
+  const generateDogsCards = function() {
+    return dogsRedux ? (
+      <Card dog={dogsRedux[0]}/>
     ) : (
       // this.props.dogs[0].map((d) => <Card dogs={d} />)
       <p>There's no dogs to show</p>
     );
   }
-  render() {
-    return <ul>{this.generateDogsCards()}</ul>;
-  }
-}
 
-function mapStateToProps(state) {
-  return {
-    dogs: state.dogs,
-  };
+  return <ul>{generateDogsCards()}</ul>;
 }
-
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(actionCreators, dispatch);
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Cards);

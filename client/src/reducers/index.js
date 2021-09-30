@@ -43,6 +43,9 @@ function rootReducer(state = initialState, action) {
                 darkMode : !state.darkMode
             }
         }
+        default: {
+            return state
+        }
     }
 }
 

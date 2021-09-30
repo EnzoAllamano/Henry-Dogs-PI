@@ -3,8 +3,6 @@ import React from "react";
 import img from "../../img/hello-dog_landing.png";
 const {Link} = require('react-router-dom')
 
-var hov = false;
-
 function Landing() {
   return (
     <div className={style.mainDiv}>
@@ -14,7 +12,7 @@ function Landing() {
           <button className={style.landingButtonGo}>GUAU!</button>
         </Link>
         <div className={style.landingMsgDiv}>
-        <img className={style.imgHelloDog} src={img} />
+        <img alt = "this is a happy dog" className={style.imgHelloDog} src={img} />
         </div>
       </div>
     </div>
