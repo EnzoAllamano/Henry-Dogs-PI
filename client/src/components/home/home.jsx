@@ -2,21 +2,21 @@ import style from "./home.module.css";
 import React from "react";
 import Cards from "../cards/cards.jsx";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getAllDogs } from "../../actions";
+import Details from "../details/details.jsx";
 
 export default function Home() {
   const dispatch = useDispatch();
-
+  const dogsRedux = useSelector(state => state.dogs)
   useEffect(() => {
     dispatch(getAllDogs());
   }, []);
 
+
   return (
-    <div className={style.mainDiv}>
-      <h1>Hola todo esto es un home</h1>
-      <h1>Hola esto de abajo es una card</h1>
+    dogsRedux[0].image ? (<div className={style.mainDiv}>
       <Cards></Cards>
     </div>
-  );
+  ) : <div>Loading</div>)
 }
