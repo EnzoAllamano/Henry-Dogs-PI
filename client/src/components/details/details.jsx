@@ -7,17 +7,17 @@ export default function Details({ dog }) {
       <summary className={style.summary}>
         <div class={style.detailsModalOverlay}></div>
         <img
-          className={style.img}
+          className={style.imgCard}
           src={dog.image.url}
         />
-        <h1>{dog.name}</h1>
+        <h1 className={style.h1DogName}>{dog.name}</h1>
       </summary>
       <div class={style.detailsModal}>
         <div class={style.detailsModalTitle}>
           <h1>{dog.name}</h1>
         </div>
         <div className = {style.advancedDetails}>
-        <img className={style.img} src = {dog.image.url}></img>
+        <img className={style.imgDetails} src = {dog.image.url}></img>
         <ul>
           <li>Weight {dog.weight.metric} Kg</li>
           <li>Height {dog.height.metric} cm</li>

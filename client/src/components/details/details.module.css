@@ -1,8 +1,17 @@
-.img {
+@import url('https://fonts.googleapis.com/css2?family=Ephesis&display=swap');
+
+.imgDetails {
   border: 1px solid black;
+  width: 50vw;
+}
+.imgCard{
   width: 400px;
+  height: 300px;
+  object-fit: cover;
+  border-bottom: 1px solid black;
 }
 .detailsModal {
+  width: 90vw;
   padding: 15px;
   background: #fff;
   border-radius: 0.5em;
@@ -12,7 +21,6 @@
   position: absolute;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: 30em;
   text-align: left;
   display: flex;
   flex-direction: column;
@@ -77,4 +85,9 @@ details summary:focus {
 
 .advancedDetails{
   display: flex;
+}
+
+.h1DogName{
+  font-family: 'Ephesis', cursive;
+  text-align: center;
 }

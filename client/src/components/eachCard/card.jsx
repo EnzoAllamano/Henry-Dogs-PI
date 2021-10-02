@@ -7,7 +7,7 @@ export default function Card({dog}) {
     <div className={style.divBody}>
       <Details dog = {dog}/>
       <ul className = {style.ul}>
-        {dog.temperament.split(', ').map(t =><li>{t}</li>)}
+        {dog.temperament.split(', ').slice(0,4).map(t =><li>{t}</li>)}
       </ul>
     </div>
   );

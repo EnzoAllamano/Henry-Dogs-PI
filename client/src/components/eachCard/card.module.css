@@ -1,10 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital@1&display=swap');
+
 .divBody{
   height: auto;
   width: 400px;
   background-color: white;
   border: 1px solid black;
   box-shadow: 2px 2px 20px black;
-  padding:15px;
+  padding: 0px 0px 15px 0px;
   margin: 15px 0px;
 }
 
@@ -16,9 +18,11 @@
 }
 
 .ul li {
-  border-radius: 10px;
-  border: 1px solid black;
+  font-family: 'Playfair Display', serif;
   padding: 5px;
-  background-color: coral;
+  font-size: 20px;
+  font-weight: 600;
   margin: 7px 2px;
+  text-decoration-line: underline;
+  text-decoration-color: rgb(97, 97, 97);
 }
