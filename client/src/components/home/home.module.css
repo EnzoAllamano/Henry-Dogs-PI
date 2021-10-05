@@ -1,0 +1,9 @@
+.mainDiv{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    flex-wrap: wrap;
+    box-shadow: inset 0px 0px 20px 0px black;
+    width: 75%;
+}

@@ -1,10 +1,12 @@
 const initialState = {
-    dogs : [{name: "Affenpinscher"}],
+    dogs : [],
     dogDetail: {},
     actualPage: 1,
     darkMode : false,
-    actPage: []
+    dogsActualPage: []
 }
+
+var dogsPerPage = 8
 
 function rootReducer(state = initialState, action) {
     switch(action.type) {
@@ -12,7 +14,7 @@ function rootReducer(state = initialState, action) {
             return {
                 ...state,
                 dogs: [...action.payload],
-                actPage: action.payload.slice(0, 8)
+                dogsActualPage: action.payload.slice((state.actualPage - 1) * dogsPerPage , dogsPerPage)
             }
         }
         case "GET_DOG_DETAIL": {
@@ -21,22 +23,23 @@ function rootReducer(state = initialState, action) {
                 dogDetail: action.payload
             }
         }
-        case "NEXT_PAGE": {
+        case "CHANGE_PAGE": {
             return {
                 ...state,
-                actualPage:  state.actualPage + 1
-            }
-        }
-        case "PREV_PAGE": {
-            return {
-                ...state,
-                actualPage: state.actualPage - 1
+                actualPage: action.payload,
+                dogsActualPage: state.dogs.slice((action.payload - 1) * dogsPerPage , action.payload * dogsPerPage) // Toma los dogs desde (PAG - 1) * 8 [Porque pag empieza en 1]
             }
         }
         case "SWITCH_DARK": {
             return {
                 ...state,
                 darkMode : !state.darkMode
+            }
+        }
+        case "DELETE_DOG_DETAIL":{
+            return {
+                ...state,
+                dogDetail: {}
             }
         }
         default: {

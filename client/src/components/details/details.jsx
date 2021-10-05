@@ -1,34 +1,25 @@
 import React from "react";
 import style from "./details.module.css";
+import DetailsModal from "../detailsModal/detailsModal";
+import { useDispatch } from "react-redux";
+import { deleteDogDetail, getDogDetail } from "../../actions";
 
 export default function Details({ dog }) {
+  const dispatch = useDispatch();
+
+  async function loadDogDetails() {
+    dispatch(deleteDogDetail());
+    dispatch(getDogDetail(dog.id));
+  }
+
   return (
     <details>
       <summary className={style.summary}>
-        <div class={style.detailsModalOverlay}></div>
-        <img
-          className={style.imgCard}
-          src={dog.image.url}
-        />
-        <h1 className={style.h1DogName}>{dog.name}</h1>
+        <div className={style.detailsModalOverlay}></div>
+        <img alt = {`this is a ${dog.name}`} onClick={loadDogDetails} className={style.imgCard} src={dog.image.url} />
+        <h1  onClick={loadDogDetails} className={style.h1DogName}>{dog.name}</h1>
       </summary>
-      <div class={style.detailsModal}>
-        <div class={style.detailsModalTitle}>
-          <h1>{dog.name}</h1>
-        </div>
-        <div className = {style.advancedDetails}>
-        <img className={style.imgDetails} src = {dog.image.url}></img>
-        <ul>
-          <li>Weight {dog.weight.metric} Kg</li>
-          <li>Height {dog.height.metric} cm</li>
-          <li>Life span {dog.life_span} years</li>
-        <ul className = {style.ul}>
-        {dog.temperament.split(', ').map(t =><li>{t}</li>)}
-      </ul>
-        </ul>
-        </div>
-        <div class={style.detailsModalContent}>Descripcion</div>
-      </div>
+      <DetailsModal></DetailsModal>
     </details>
   );
 }

@@ -1,0 +1,38 @@
+.divBody {
+  border-radius: 10%;
+  height: auto;
+  width: 300px;
+  background-color: white;
+  border: 1px solid black;
+  box-shadow: 2px 2px 20px black;
+  margin: 15px 0px;
+  top: 0px;
+  overflow: hidden;
+}
+
+.ul {
+  list-style: none;
+  display: flex;
+  flex-wrap:wrap;
+  justify-content: space-around;
+  margin: 10px 0px;
+}
+
+.ul li {
+  font-size: 20px;
+  border-radius: 10px;
+  border: 1px solid black;
+  padding: 4px 7px;
+  background-color: coral;
+  margin: 7px 2px;
+  font-family: var(--items-font);
+}
+
+@media (max-width: 805px){
+  .divBody{
+    border-radius: 0px;
+    width: 100%;
+    height: auto;
+    box-shadow: none;
+  }
+}

@@ -45,7 +45,7 @@ appDogs.get("/", async (req, res) => {
 });
 
 appDogs.get("/:idRaza", async (req, res) => {
-  let dogs
+  let dogs = []
   const { idRaza } = req.params,
     promiseResult = await getDogs({ id: idRaza }, dogs); // Carga todas las razas, NO utilizo las que ya podría tener cargadas por si fueron modificadas en otra instancia
   if (promiseResult) {

@@ -1,0 +1,16 @@
+.imgLoading{
+/* animation: rotate 2s linear 0s infinite; */
+width: 70%;
+}
+
+.container{
+    display: flex;
+    justify-content: center !important;
+    align-items: center !important;
+}
+/* 
+@keyframes rotate {
+to{
+    transform: rotate(360deg)
+}
+} */

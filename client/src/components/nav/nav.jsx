@@ -4,12 +4,16 @@ const {Link} = require('react-router-dom')
 
 export default function Nav(){
     return (
-        <div className = {style.mainDiv}>
-            <Link to = "/home"><h1>HOME</h1></Link>
+        <nav className = {style.mainDiv}>
+            <ul className = {style.ul}>
+            <Link className={style.link} to = "/home"><h3>Home</h3></Link>
+            <Link to = "/create"><h3>Create</h3></Link>
+            <Link to = "/about"><h3>About</h3></Link>
+            </ul>
             <div className={style.navSeachBar}>
                 <input></input>
-                <button>Buscar</button>
+                <button className={style.buttonSearch}>Buscar</button>
             </div>
-        </div>
+        </nav>
     )
 }

@@ -1,17 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
+
 :root{
   --button-color1: wheat;
+  --active-button1: coral;
   --backgrounds-color1: rgba(214, 150, 125, 0.24);
+  --border-color1: black;
+  --blur-color: rgba(0, 0, 0, 0.726);
+  --items-color1: coral;
+  --items-font: 'Bebas Neue', cursive;
+  --title-font: 'Russo One', sans-serif;
+  --containers-background: rgb(75, 75, 75);
 }
 
 *{
   font-family: "Righteous", cursive;
+  padding: 0px;
+  margin: 0px;
 }
 
-body {  
+body { 
   background-image: url("./img/background_landing-page.jpg");
-  background-size:cover;
   background-repeat:repeat;
-  margin: 0;
+
+
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -22,9 +34,4 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
-}
-
-*{
-  padding: 0px;
-  margin: 0px;
 }

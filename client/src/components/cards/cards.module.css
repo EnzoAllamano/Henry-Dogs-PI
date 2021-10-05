@@ -1,9 +1,8 @@
 .divContainer{
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    padding: 3vw;
+    padding: 3%;
 }
 
 .ulContainer{
@@ -11,4 +10,10 @@
     flex-wrap: wrap;
     justify-content: space-around;
     align-items: flex-start;
+}
+
+@media (max-width: 805px){
+    .divContainer{padding: 0px;
+    width: 90%;
+}
 }

@@ -1,0 +1,89 @@
+.divContainer{
+  width: 100%;
+}
+
+.ulMain {
+  width: 100%;
+  background-color: var(--containers-background);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 10vh;
+  text-decoration: none;
+}
+
+.ulMain {
+  padding: 0;
+  list-style: none;
+}
+
+.ulMain li {
+  display: inline-block;
+  margin: 5px;
+  position: relative;
+}
+
+.ulMain i {
+  color: white;
+  position: absolute;
+  top: 30%;
+  left: 34%;
+  transition: all 265ms ease-out;
+}
+
+.ulMain a {
+  display: inline-block;
+}
+
+.ulMain a:before {
+  transform: scale(1);
+  content: " ";
+  width: 45px;
+  height: 45px;
+  border-radius: 100%;
+  display: block;
+  transition: all 265ms ease-out;
+}
+
+
+
+.instagram a:hover i{
+    color: #833ab4;
+}
+
+.github a:hover i{
+    color: black;
+}
+
+.google a:hover i{
+    color: #4285f4;
+}
+.linkedin a:hover i{
+    color: #0e76a8;
+}
+
+.instagram a::before {
+    background-color: #833ab4;
+}
+
+.github a::before {
+  background-color: black;
+}
+
+.google a::before {
+  background-color: #4285f4;
+}
+
+.linkedin a::before {
+  background-color: #0e76a8;
+}
+
+.ulMain a:hover:before {
+  transform: scale(0);
+  transition: all 265ms ease-in;
+}
+
+.ulMain a:hover i {
+  transform: scale(2.2);
+  transition: all 265ms ease-in;
+}

@@ -1,11 +1,5 @@
-const axios = require('axios').default;
-
-const local = "localhost:3000";
-
 const GET_ALL_DOGS = "GET_ALL_DOGS",
   GET_DOG_DETAIL = "GET_DOG_DETAIL",
-  NEXT_PAGE = "NEXT_PAGE",
-  PREV_PAGE = "PREV_PAGE",
   SWITCH_DARK = "SWITCH_DARK";
 
 export function getAllDogs() {
@@ -24,15 +18,16 @@ export function getDogDetail(idDog) {
   };
 }
 
-export function nextPage() {
+export function deleteDogDetail(){
   return {
-    type: NEXT_PAGE,
-  };
+    type: "DELETE_DOG_DETAIL"
+  }
 }
 
-export function prevPage() {
+export function changePage(page) {
   return {
-    type: PREV_PAGE,
+    type: "CHANGE_PAGE",
+    payload: page
   };
 }
 
@@ -41,11 +36,3 @@ export function switchDark() {
     type: SWITCH_DARK,
   };
 }
-
-export default {
-  GET_ALL_DOGS,
-  GET_DOG_DETAIL,
-  NEXT_PAGE,
-  PREV_PAGE,
-  SWITCH_DARK,
-};
