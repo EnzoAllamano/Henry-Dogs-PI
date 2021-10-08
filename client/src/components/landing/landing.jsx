@@ -10,7 +10,7 @@ function Landing() {
         <h1 className={style.h1Title}> HENRY DOGS</h1>
         <h3 className={style.h3Quote}>{randomQuote()}</h3>
         <Link to="/home">
-          <button className={style.buttonEnter}>¡GUAU!</button>
+          <button className={style.buttonEnter}><i class="fas fa-paw"></i><span>¡ENTER!</span></button>
         </Link>
       </div>
       <div className={style.divDog}>

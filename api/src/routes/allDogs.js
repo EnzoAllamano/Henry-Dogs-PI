@@ -31,7 +31,7 @@ async function getDogs(condicion, dogs) {
     return error;
   } finally {
     dogs.push(...response[0].data, ...response[1]);
-    return true;
+    return true; // Return true para responder según lo ocurrido
   }
 }
 

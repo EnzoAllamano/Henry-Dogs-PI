@@ -1,13 +1,13 @@
 import React from "react";
 import style from "./create.module.css";
-import styleCards from "../cards/cards.module.css";
+import styleCards from "../home/home.module.css";
 
 export default function Create() {
   function handleSubmit() {
     console.log("asdjkashd");
   }
   return (
-    <form onSubmit={handleSubmit()} className={`${styleCards.divContainer}`}>
+    <form onSubmit={handleSubmit()} className={styleCards.mainDiv}>
       <div className={style.inputContainer}>
         <div>
           <label>Breed: </label> <input />

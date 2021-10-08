@@ -4,15 +4,17 @@
   width: 300px;
   height: 225px;
   object-fit: cover;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid var(--border-color1);
   object-position:top;
 }
 
 .h1DogName{
+  color: var(--font-color1);
   font-family: var(--items-font);
   text-align: center;
-  font-size: 28px;
-  border-bottom: 1px solid black;
+  font-size: 27px;
+  border-bottom: 1px solid var(--border-color1);
+  white-space: pre-line
 }
 
 .summary {
@@ -34,10 +36,11 @@ details summary:focus {
   left: 0;
   top: 0;
   z-index: 10;
+  backdrop-filter: blur(10px);
 }
 details[open] .detailsModalOverlay {
   pointer-events: all;
-  opacity: 0.7;
+  opacity: 0.5;
 }
 
 @media (max-width: 805px){

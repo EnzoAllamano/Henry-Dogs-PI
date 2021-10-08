@@ -4,6 +4,7 @@
     align-items: flex-start;
     gap: 20px;
     min-height: 75.2vh;
+    margin-top: 20px;
 }
 
 .inputContainer label{

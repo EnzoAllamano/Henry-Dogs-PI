@@ -1,13 +1,12 @@
 .imgDetails {
-    border: 2px solid black;
+    border: 2px solid var(--border-color1);
     width: 50%;
   }
   .detailsModal {
-    width: 40vw;
     padding: 15px;
-    background: #fff;
+    background: var(--containers-background);
     border-radius: 0.5em;
-    box-shadow: 0 10px 10px rgb(0, 0, 0);
+    box-shadow: 0 10px 10px var(--border-color1);
     left: 50%;
     pointer-events: none;
     position: fixed;
@@ -20,7 +19,7 @@
   }
   
   .detailsModal .detailsModalTitle {
-    color: #111827;
+    color: var(--font-color1);
     padding: 1.5em 2em;
     pointer-events: all;
     position: relative;
@@ -32,7 +31,7 @@
     line-height: normal;
   }
   .detailsModal .detailsModalContent {
-    border-top: 1px solid #e0e0e0;
+    border-top: 1px solid var(--border-color1);
     padding: 2em;
     pointer-events: all;
     overflow: auto;

@@ -1,15 +1,11 @@
-.divContainer{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 3%;
-}
+
 
 .ulContainer{
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
     align-items: flex-start;
+    width: 100%;
 }
 
 @media (max-width: 805px){

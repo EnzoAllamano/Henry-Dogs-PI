@@ -1,9 +1,11 @@
 .mainDiv{
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     align-content: center;
     flex-wrap: wrap;
+    gap: 18px;
     box-shadow: inset 0px 0px 20px 0px black;
     width: 75%;
+    min-height: 80vh;
 }

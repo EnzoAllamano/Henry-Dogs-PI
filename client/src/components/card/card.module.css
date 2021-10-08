@@ -1,13 +1,19 @@
 .divBody {
   border-radius: 10%;
-  height: auto;
+  height: 380px;
   width: 300px;
-  background-color: white;
+  background-color: var(--containers-background);
   border: 1px solid black;
-  box-shadow: 2px 2px 20px black;
+  box-shadow: 0px 0px var(--shadow-cards) var(--border-color1);
   margin: 15px 0px;
   top: 0px;
   overflow: hidden;
+  transition: 150ms ease-in;
+}
+
+.divBody:hover{
+  box-shadow: 0px 0px calc(var(--shadow-cards)*2) var(--border-color1);
+  background-color: var(--hover-color1);
 }
 
 .ul {
@@ -16,14 +22,16 @@
   flex-wrap:wrap;
   justify-content: space-around;
   margin: 10px 0px;
+  row-gap: 20px;
 }
 
 .ul li {
+  color: var(--font-color1);
   font-size: 20px;
   border-radius: 10px;
-  border: 1px solid black;
+  border: 1px solid var(--border-color1);
   padding: 4px 7px;
-  background-color: coral;
+  background-color: var(--active-button1);
   margin: 7px 2px;
   font-family: var(--items-font);
 }

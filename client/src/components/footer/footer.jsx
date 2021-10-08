@@ -3,7 +3,6 @@ import style from "./footer.module.css";
 
 export default function Footer() {
   return (
-    <footer className = {style.divContainer}>
     <ul className={style.ulMain}>
       <li className= {style.instagram}>
         <a
@@ -38,6 +37,5 @@ export default function Footer() {
         </a>
       </li>
     </ul>
-    </footer>
   );
 }

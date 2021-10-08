@@ -19,8 +19,6 @@ export default function Cards() {
   };
 
   return (
-    <div className={style.divContainer}>
       <ul className={style.ulContainer}>{generateDogsCards()}</ul>
-    </div>
   );
 }

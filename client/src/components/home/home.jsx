@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllDogs } from "../../actions";
 import Pages from "../pages/pages";
+import Filters from "../filter/filter";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -16,6 +17,7 @@ export default function Home() {
 
   return (
     <div className={style.mainDiv}>
+      <Filters></Filters>
       <Cards></Cards>
       <Pages></Pages>
     </div>

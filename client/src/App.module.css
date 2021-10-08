@@ -1,7 +1,36 @@
 .app {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+    min-height: 100vh;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.light {
+  --button-color1: rgb(255, 193, 111);
+  --active-button1: rgb(255, 158, 67);
+  --containers-background: rgb(255, 255, 255);
+  --hover-color1: rgb(230, 230, 230);
+  --shadow-cards: 15px;
+  --border-color1: rgb(0, 0, 0);
+  --blur-color: rgba(0, 0, 0, 0.726);
+  --items-font: "Lato, sans-serif";
+  --title-font: "Russo One, sans-serif";
+  --font-color1: black;
+  background-image: url('./img/background_light.jpg');
+}
+
+.dark{
+    --button-color1: rgb(54, 34, 184);
+    --active-button1: rgb(0, 7, 107);
+    --containers-background: rgb(29, 29, 29);
+    --hover-color1: rgb(34, 34, 34);
+    --shadow-cards: 8px;
+    --border-color1: white;
+    --blur-color: rgba(0, 0, 0, 0.726);
+    --items-font: 'Lato, sans-serif';
+    --title-font: 'Russo One, sans-serif';
+    --font-color1: white;
+  background-image: url('./img/background_dark.jpg');
 }

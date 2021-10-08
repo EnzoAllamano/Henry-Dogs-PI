@@ -4,30 +4,59 @@ const GET_ALL_DOGS = "GET_ALL_DOGS",
 
 export function getAllDogs() {
   return async function (dispatch) {
-      let data = await fetch("/dogs")
-      let dataJ = await data.json()
-      dispatch({ type: GET_ALL_DOGS, payload: dataJ })
+    let data = await fetch("/dogs");
+    let dataJ = await data.json();
+    dispatch({ type: GET_ALL_DOGS, payload: dataJ });
+  };
+}
+
+export function searchDogs(name) {
+  return async function (dispatch) {
+    let data = await fetch(`/dogs?name=${name}`);
+    let dataJ = await data.json();
+    dispatch({ type: "SEARCH_DOGS", payload: dataJ });
   };
 }
 
 export function getDogDetail(idDog) {
   return async function (dispatch) {
-    let data = await fetch(`/dogs/${idDog}`)
-    data = await data.json()
-    dispatch({ type: GET_DOG_DETAIL, payload: data})
+    let data = await fetch(`/dogs/${idDog}`);
+    data = await data.json();
+    dispatch({ type: GET_DOG_DETAIL, payload: data });
   };
 }
 
-export function deleteDogDetail(){
+export function deleteDogDetail() {
   return {
-    type: "DELETE_DOG_DETAIL"
-  }
+    type: "DELETE_DOG_DETAIL",
+  };
 }
 
 export function changePage(page) {
   return {
     type: "CHANGE_PAGE",
-    payload: page
+    payload: page,
+  };
+}
+
+export function lastPage() {
+  return {
+    type: "LAST_PAGE",
+  };
+}
+export function firstPage() {
+  return {
+    type: "CHANGE_PAGE",
+    payload: 1,
+  };
+}
+export function sortDogs({ sortParam, sortDirection }) {
+  return {
+    type: "SORT_DOGS",
+    payload: {
+      sortParam,
+      sortDirection,
+    },
   };
 }
 

@@ -1,16 +1,13 @@
 .imgLoading{
-/* animation: rotate 2s linear 0s infinite; */
 width: 70%;
 }
 
 .container{
+    background-color: var(--containers-background);
     display: flex;
     justify-content: center !important;
     align-items: center !important;
 }
-/* 
-@keyframes rotate {
-to{
-    transform: rotate(360deg)
+.container h1{
+    color: var(--font-color1);
 }
-} */

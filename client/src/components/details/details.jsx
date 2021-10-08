@@ -17,7 +17,7 @@ export default function Details({ dog }) {
       <summary className={style.summary}>
         <div className={style.detailsModalOverlay}></div>
         <img alt = {`this is a ${dog.name}`} onClick={loadDogDetails} className={style.imgCard} src={dog.image.url} />
-        <h1  onClick={loadDogDetails} className={style.h1DogName}>{dog.name}</h1>
+        <h1  onClick={loadDogDetails} className={style.h1DogName}>{dog.name} {dog.name.length > 21 ? " " : "\n"}({dog.weight.imperial} lb)</h1>
       </summary>
       <DetailsModal></DetailsModal>
     </details>

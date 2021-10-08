@@ -1,0 +1,26 @@
+.divContainer{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    gap: 10px;
+    flex-wrap: nowrap;
+    margin-top: 20px;
+}
+
+.divContainer button{
+    color: var(--font-color1);
+    text-transform: uppercase;
+    cursor: pointer;
+    font-size: 22px;
+    padding: 4px 8px;
+    border-radius: 20px;
+    border: 1px solid var(--border-color1);
+    background-color: var(--button-color1);
+}
+
+.divContainer i{
+    font-size: 26px;
+    color: var(--font-color1);
+    align-self: flex-end;
+    justify-self:right;
+}
