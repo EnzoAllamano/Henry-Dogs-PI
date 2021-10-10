@@ -1,12 +1,9 @@
 const appTemperaments = require("express").Router();
-const axios = require("axios");
-const { query } = require("express");
-const { API_KEY } = process.env;
+const {Temperament} = require('../db')
 
-
-
-appTemperaments.get("/", (req, res) => {
-
+appTemperaments.get("/", async (req, res) => {
+    let temperaments = await Temperament.findAll()
+    res.send(temperaments)
 })
 
 module.exports = {appTemperaments}

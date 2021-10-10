@@ -4,33 +4,10 @@ const initialState = {
   dogDetail: {}, // Details dog por id
   dogsActualPage: [], // subArray de dogs, los mostrados en la página actual
   actualPage: 1,
-  darkMode: true,
+  darkMode: false,
 };
 
-var dogsPerPage = 8;
-
-// if (breed.weight.metric.split(" - ").length === 1)
-//   // Hay razas que tienen solo el peso mínimo
-//   breed.weight.metric = `${breed.weight.metric.split(", ")[0]} - ${
-//     breed.weight.metric.split(", ")[0]
-//   }`;
-//   let splitedWeightMetric = breed.weight.metric.split(" - ")
-// if (
-//   !breed.weight.metric || // Hay razas que directamente no tienen peso
-//   breed.weight.metric === "NaN" || // Hay razas cuyo peso es "NaN"
-//   splitedWeightMetric[0] === "NaN" // Hay razas cuyo peso mínimo es "NaN" pero si tienen peso máximo
-// ) {
-//   let [imperialMin, imperialMax] = breed.weight.imperial.split(" – ");
-//   let imperialMinNumber = parseInt(imperialMin);
-//   let imperialMaxNumber = parseInt(imperialMax);
-//   console.log("Raza " + breed.name + "imperialmin, max " + imperialMinNumber, imperialMaxNumber)
-//   if (typeof imperialMinNumber !== "number") // Hay razas que además de tener mal el metric TAMBIÉN TIENEN MAL EL IMPERIAL
-//     imperialMinNumber = imperialMaxNumber - 1; // En ese caso coloco el peso mínimo igual al máximo - 2
-//   breed.weight.metric = `${Math.floor(
-//     imperialMinNumber / 2.205
-//   )} - ${Math.floor(imperialMaxNumber / 2.205)}`;
-// }
-// if(splitedWeightMetric[1] === "NaN") breed.weight.metric = `${splitedWeightMetric[0]} - ${Math.floor(parseInt(breed.weight.imperial.split(' - ')[1]) / 2.205)}`
+export var dogsPerPage = 40;
 
 function setImg(auxDogs, searchDogs) {
   // Cuando se realiza una búsqueda las razas vienen sin imagen, solo tienen una ID de referencia que es inútil

@@ -71,6 +71,18 @@
   max-width: 40vw;
 }
 
+.darkMode{
+  color: var(--font-color1);
+  cursor: pointer;
+  font-size: 22px;
+  padding: 4px 8px;
+  border-radius: 20px;
+  border: 1px solid var(--border-color1);
+  background-color: var(--button-color1);
+  position: absolute;
+  transform: translate(40vw, -40vh);
+}
+
 @media (max-width: 830px){
   .divDog{
     display: none;

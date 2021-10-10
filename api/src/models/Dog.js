@@ -15,7 +15,7 @@ module.exports = (sequelize) => {
       primaryKey: true,
     },
     weight:{
-      type: DataTypes.INTEGER,
+      type: DataTypes.JSON,
     },
     height: {
         type: DataTypes.INTEGER
@@ -29,8 +29,8 @@ module.exports = (sequelize) => {
     origin:{
       type: DataTypes.STRING
     },
-    img: {
-      type: DataTypes.STRING,
+    image: {
+      type: DataTypes.JSON,
     }
   });
 };

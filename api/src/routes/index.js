@@ -6,7 +6,7 @@ const { Temperament, conn } = require("../db.js");
 // Ejemplo: const authRouter = require('./auth.js');
 
 async function getTemperaments() {
-  let dogs = []
+  let dogs = [];
   let result = await getDogs({}, dogs);
   if (result === true) {
     let temperaments = [];
@@ -20,21 +20,19 @@ async function getTemperaments() {
     return temperaments;
   } else {
     console.log("Error loading temperaments");
-    return []
+    return [];
   }
 }
 
 async function loadTemperaments() {
-  let id = 0,
-    temperaments = await getTemperaments();
-  temperaments.forEach((t) =>
-    Temperament.create({
-      id: ++id,
-      name: t,
-    })
-  );
+  temperaments = await getTemperaments();
+  for (let i = 0; i < temperaments.length; i++) {
+    await Temperament.create({
+      name: temperaments[i],
+    });
+  }
 }
-// loadTemperaments();
+loadTemperaments();
 const router = Router();
 
 // Configurar los routers

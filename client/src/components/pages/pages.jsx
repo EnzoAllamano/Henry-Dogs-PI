@@ -2,6 +2,7 @@ import React from "react";
 import style from "./pages.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import { changePage, firstPage, lastPage } from "../../actions";
+import { dogsPerPage } from "../../reducers";
 
 export default function Pages() {
   const actualPage = useSelector((state) => state.actualPage);
@@ -9,6 +10,11 @@ export default function Pages() {
   var dispatch = useDispatch();
 
   function onClickPage(element) {
+    window.scroll({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
     dispatch(changePage(element.target.id));
   }
 
@@ -17,7 +23,7 @@ export default function Pages() {
       thisNPage;
       // Si el número actual de página es inferior a 3, para que no muestre página 0 o -1 se setea en 3
     if (actualP < 3) actualP = 3;
-    let totalPages = Math.floor(dogsCount/8)
+    let totalPages = Math.floor(dogsCount/dogsPerPage)
     // Si el número actual de página supera los 21 (total - 2), para que no muestre
     // botones de página 22 y 23 lo pone en 20 (total - 1)(solo al valor de la variable de esta función, el estado no lo toca)
     if(actualP > totalPages - 2) actualP = (totalPages - 1) 

@@ -1,9 +1,14 @@
 import style from "./landing.module.css";
 import React from "react";
 import img from "../../img/hello-dog_landing.png";
-const { Link } = require("react-router-dom");
-
+import {useSelector, useDispatch} from 'react-redux' 
+import {Link } from  "react-router-dom"
+import { switchDark } from "../../actions";
 function Landing() {
+
+const dispatch = useDispatch()
+const darkMode = useSelector(state => state.darkMode)
+
   return (
     <div className={style.mainDiv}>
       <div className={style.landingDiv}>
@@ -16,6 +21,7 @@ function Landing() {
       <div className={style.divDog}>
         <img alt="a happy dog" className={style.imgDog} src={img} />
       </div>
+      <button className={style.darkMode} onClick={() => dispatch(switchDark())}>{darkMode ? <i class="fas fa-sun"></i> : <i class="fas fa-moon"></i>}</button>
     </div>
   );
 

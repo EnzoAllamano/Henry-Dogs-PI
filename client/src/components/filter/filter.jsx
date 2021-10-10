@@ -20,7 +20,6 @@ export default function Filters() {
     element.target.innerHTML = sorter.sortDirection === 1 ? element.target.id + "🢁" : element.target.id + "🢃"
     dispatch(sortDogs(sorter));
   }
-  const darkMode = useSelector(state => state.darkMode)
   return (
 
     <div className={style.divContainer}>
@@ -39,7 +38,6 @@ export default function Filters() {
       >
         WEIGHT🢁
       </button>
-      <button onClick={() => dispatch(switchDark())}>{darkMode ? <i class="fas fa-sun"></i> : <i class="fas fa-moon"></i>}</button>
     </div>
   );
 }
