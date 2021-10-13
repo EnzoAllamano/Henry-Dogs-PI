@@ -1,32 +1,11 @@
 const appDogs = require("express").Router();
 const axios = require("axios");
 const { API_KEY } = process.env;
-const { Dog } = require("../db.js");
+const { Dog, Temperament } = require("../db.js");
+const { Sequelize } = require("sequelize");
+const { Op } = require("sequelize")
 
-// await Dog.create({
-// name: "perritu",
-// id: 999
-// })
-
-var allDogs = [];
-
-function setImg(auxDogs, searchDogs) {
-  // Cuando se realiza una búsqueda las razas vienen sin imagen, solo tienen una ID de referencia que es inútil
-  // porque no se pueden utilizar los endpoints para traerlas, por cada raza que existe en auxDogs (que se carga al momento de traer "TODAS" las razas)
-  // la coloco en un Array según su id para evitar recorrerlo demasiadas veces.
-  let auxDogsArr = [];
-  auxDogs.forEach((dog) => (auxDogsArr[dog.id] = dog));
-  // Ahora por cada raza nueva que haya llegado le asigno la image.url que tiene la raza correspondiente en su id del arreglo auxDogsArr
-  searchDogs.forEach(
-    (dog) =>
-      (dog.image = {
-        url: auxDogsArr[dog.id] ? auxDogsArr[dog.id].image.url : undefined,
-      })
-  );
-  return searchDogs;
-}
-
-function repairUselessAPIErrors(dogs) {
+function repairAPIBugs(dogs) {
   dogs.forEach((breed) => {
     if (!breed.temperament)
       breed.temperament = "Intelligent, Charming, Sociable"; // Hay razas sin temperamentos
@@ -50,77 +29,114 @@ function repairUselessAPIErrors(dogs) {
   return dogs;
 }
 
-function getAPIDogs(condicion) {
-  if (condicion.name)
-    return axios.get(
-      `https://api.thedogapi.com/v1/breeds/search?q=${condicion.name}&api_key=${API_KEY}`
-    );
-  else
-    return axios.get(`https://api.thedogapi.com/v1/breeds?api_key=${API_KEY}`);
+function getAPIDogs(name) {
+  return name
+    ? axios.get(
+        `https://api.thedogapi.com/v1/breeds/search?q=${name}&api_key=${API_KEY}`
+      )
+    : axios.get(`https://api.thedogapi.com/v1/breeds?api_key=${API_KEY}`);
 }
 
-function getDBDogs(where) {
-  return Dog.findAll({ where });
+function getDBDogDetails(id){
+  return Dog.findAll({
+    where: {id},
+    include: [{ model: Temperament, attributes: ["name"] }],
+    through: {
+      attributes: [],
+    },
+  });
 }
 
-async function getDogs(condicion, dogs) {
-  const PROMISES = [getAPIDogs(condicion), getDBDogs(condicion)]; // Ambas funciones devuelven una promesa, buscan en la API y DB respectivamente según condición
-  let response;
+function getDBDogs(name) {
+  let where = name !== undefined ? {name:
+    {[Op.like]: `%${name}%`}
+  } : {}
+  return Dog.findAll({
+    where,
+    attributes: ["id", "name", "weight", "height", "image"],
+    include: [{ model: Temperament, attributes: ["name"] }],
+    through: {
+      attributes: [],
+    },
+  });
+}
+
+async function getDogs(name) {
   try {
-    response = await Promise.all(PROMISES); // Carga en dogs los resultados de ambas búsquedas
-  } catch (error) {
-    return error;
-  }
-  let repairedAPI = repairUselessAPIErrors(response[0].data); // "Repara" los datos de la API
-  if (Object.keys(condicion).length === 0) allDogs = repairedAPI; // Si se trajeron todas las razas las guarda en una variable auxiliar para podes extraer las imágenes cuando se haga una búsqueda por nombre
-  dogs.push(...repairedAPI, ...response[1]);
-
-  return true; // Return true para responder según lo ocurrido
-}
-
-appDogs.get("/", async (req, res) => {
-  let result
-  let dogs = [];
-  const { name } = req.query; // Extraigo el name pasado por query
-  const condicion = name ? { name } : {}; // Si se pasó name setea la condicionición como un objeto con name: req.query.name, si no vacío
-  result = await getDogs(condicion, dogs);
-  if (result === true) {
-    dogs = dogs.map((d) => {
+    let APIDogs = await getAPIDogs(name);
+    APIDogs = APIDogs.data;
+    APIDogs = repairAPIBugs(APIDogs);
+    APIDogs = APIDogs.map((d) => {
       return {
         name: d.name,
         weight: d.weight,
         image: d.image,
         temperament: d.temperament,
-        id: d.id
+        id: d.id,
       };
     });
-    res.send(dogs);
-  } else res.status(400).send({ msg: "API error getting " + result });
+    let DBDogs = await getDBDogs(name);
+    let result = { APIDogs, DBDogs };
+    return result;
+  } catch (e) {
+    console.log(e);
+    return;
+  }
+}
+
+appDogs.get("/", async (req, res) => {
+  const { name } = req.query; // Extraigo el name pasado por query
+  let result = await getDogs(name);
+  result ? res.status(200).json(result) : res.status(400);
 });
 
 appDogs.get("/:idRaza", async (req, res) => {
-  let dogs = [];
   const { idRaza } = req.params;
-  // Carga todas las razas, NO utilizo las que ya podría tener
-  //cargadas por si fueron modificadas en otra instancia
-  let promiseResult = await getDogs({ id: idRaza }, dogs); // getDogs devuelve true o un Error
-  if (promiseResult) {
-    const dogFound = dogs.find((d) => d.id == idRaza); // Busca solo la primer raza con ese id
-    dogFound
-      ? res.send(dogFound)
-      : res.status(400).send({ msg: "ID not found" });
-  } else res.status(400).send({ msg: "API error searching idRaza " + result }); // Si la carga falló envía el error y retorna
+  let DBDogs
+  try {
+    if(idRaza.length > 4) DBDogs = await getDBDogDetails( idRaza );
+    if (DBDogs && DBDogs.length)  return res.send(DBDogs[0]);
+    else {
+      let APIDogs = await getAPIDogs(undefined);
+      APIDogs = APIDogs.data
+      const dogFound = APIDogs.find((d) => d.id == idRaza);
+      dogFound ? res.send(dogFound) : res.status(405);
+    }
+  } catch (e) {
+    console.log(e);
+  }
 });
 
+function capitalize(name){
+  return name ? name[0].toUpperCase() + name.slice(1, name.length) : ""
+}
 
 appDogs.post("/create", async (req, res) => {
-  let {name, id, weight, image} = req.body
-  const [dogs, created] = await Dog.findOrCreate({
-    where: {
-      name, id, weight, image
-    }
-  })
-  res.send(dogs)
-})
+  let { breed, minW, maxW, minH, maxH, minL, maxL, temps, url, bredF, origin,  } = req.body;
+  let name = capitalize(breed),
+  life_span = `${minL} - ${maxL}`,
+    weight = { imperial: `${minW} - ${maxW}` },
+    height = { imperial: `${minH} - ${maxH}` },
+    image = { url },
+    bred_for = bredF
+  try {
+    const [dogs, created] = await Dog.findOrCreate({
+      where: {
+        name,
+        weight,
+        height,
+        life_span,
+        image,
+        bred_for,
+        origin
+      },
+    });
+    let temperamentsIDs = temps.map((t) => parseInt(t.id));
+    dogs.addTemperaments(temperamentsIDs);
+    res.send({msg: "Breed correctly created"})
+  } catch (error) {
+    res.send({msg: "Error during creation " + error});
+  }
+});
 
-module.exports = { appDogs, getDogs };
+module.exports = { appDogs, getAPIDogs };

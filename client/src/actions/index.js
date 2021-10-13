@@ -1,20 +1,16 @@
-const GET_ALL_DOGS = "GET_ALL_DOGS",
-  GET_DOG_DETAIL = "GET_DOG_DETAIL",
-  SWITCH_DARK = "SWITCH_DARK";
-
 export function getAllDogs() {
   return async function (dispatch) {
     let data = await fetch("/dogs");
     let dataJ = await data.json();
-    dispatch({ type: GET_ALL_DOGS, payload: dataJ });
+    dispatch({ type: "GET_ALL_DOGS", payload: dataJ });
   };
 }
 
 export function searchDogs(name) {
   return async function (dispatch) {
     let data = await fetch(`/dogs?name=${name}`);
-    let dataJ = await data.json();
-    dispatch({ type: "SEARCH_DOGS", payload: dataJ });
+    data = await data.json();
+    dispatch({ type: "SEARCH_DOGS", payload: data });
   };
 }
 
@@ -22,9 +18,10 @@ export function getDogDetail(idDog) {
   return async function (dispatch) {
     let data = await fetch(`/dogs/${idDog}`);
     data = await data.json();
-    dispatch({ type: GET_DOG_DETAIL, payload: data });
+    dispatch({ type: "GET_DOG_DETAIL", payload: data });
   };
 }
+
 
 export function deleteDogDetail() {
   return {
@@ -60,8 +57,29 @@ export function sortDogs({ sortParam, sortDirection }) {
   };
 }
 
+
 export function switchDark() {
   return {
-    type: SWITCH_DARK,
+    type: "SWITCH_DARK",
   };
+}
+
+export function filterDogs(DBOnly){
+  return{
+    type: "FILTER_DOGS",
+    payload: DBOnly
+  }
+}
+
+export function clearFilters(){
+  return{
+    type: "CLEAR_FILTERS"
+  }
+}
+
+export function filterByTemperaments(temps){
+  return  {
+    type: "FILTER_BY_TEMPERAMENTS",
+    payload: temps
+  }
 }

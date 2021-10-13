@@ -2,30 +2,33 @@ import React from "react";
 import style from "./create.module.css";
 import styleCards from "../home/home.module.css";
 import { useState } from "react";
-import Temperaments from '../temperaments/temperaments.jsx'
-import Card from '../card/card.jsx'
+import { useDispatch } from "react-redux";
+import Temperaments from "../temperaments/temperaments.jsx";
+import { getAllDogs } from "../../actions";
 
 export default function Create() {
-  function handleSubmit(e) {
-    e.preventDefault();
-  }
-
   const [state, setState] = useState({
     breed: "",
     minW: "",
     maxW: "",
     minH: "",
     maxH: "",
+    minL: "",
+    maxL: "",
     bredF: "",
     origin: "",
     url: "",
+    temps: [],
   });
   const [errors, setErrors] = useState({
     breed: "",
     weight: "",
     height: "",
+    life: "",
     url: "",
   });
+
+  const dispatch = useDispatch();
 
   function handleOnChange(e) {
     let value = e.target.value;
@@ -42,6 +45,19 @@ export default function Create() {
         break;
       }
 
+      case "minL":{
+        if(value === "") setErrors({ life: "Min life cannot be empty" });
+        else if (!value.toLowerCase().match(/^[0-9]+$/))
+        setErrors({ life: "Life cannot have not numeric characters" });
+        break;
+      }
+
+      case "maxL": {
+        if(value === "") setErrors({ life: "Max life cannot be empty" });
+        else if (!value.toLowerCase().match(/^[0-9]+$/))
+        setErrors({ life: "Life cannot have not numeric characters" });
+        break;
+      }
       case "minW": {
         if (value === "") setErrors({ weight: "Min weight cannot be empty" });
         else if (!value.toLowerCase().match(/^[0-9]+$/))
@@ -103,12 +119,39 @@ export default function Create() {
     setState({ ...state, [e.target.name]: e.target.value });
   }
 
-function onTempSelected(temp){
-  console.log(temp)
-}
+  function onTempSelected(temp) {
+    if (state.temps.find((t) => t.id === temp.id) === undefined)
+      setState({ ...state, temps: [...state.temps, temp] });
+  }
+
+  async function handleOnSubmit(e) {
+    e.preventDefault();
+    let emptyFields = false
+    Object.keys(state).forEach((key) => {
+      if (state[key].length === 0) {
+        emptyFields = true
+      return
+    };
+    })
+    if(emptyFields) {
+      alert("All the fields must be complete");
+      return;
+    }
+    let res = await fetch("/dogs/create", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(state),
+    });
+    res = await res.json();
+    alert(res.msg);
+    dispatch(getAllDogs());
+  }
+  function onTempUnselected(temp) {
+    setState({ ...state, temps: state.temps.filter((t) => t.id !== temp.id) });
+  }
 
   return (
-    <form onSubmit={handleSubmit} className={styleCards.mainDiv}>
+    <form onSubmit={handleOnSubmit} className={styleCards.mainDiv}>
       <div className={style.inputContainer}>
         <input
           value={state.breed}
@@ -138,6 +181,26 @@ function onTempSelected(temp){
           />
           <p className={errors.weight ? style.danger : style.none}>
             {errors.weight}
+          </p>
+        </div>
+        <div>
+          <input
+            onChange={handleOnChange}
+            value={state.minL}
+            name="minL"
+            placeholder="Min life"
+            className={style.short}
+          />{" "}
+          -{" "}
+          <input
+            onChange={handleOnChange}
+            value={state.maxL}
+            name="maxL"
+            placeholder="Max life"
+            className={style.short}
+          />{" "}
+          <p className={errors.life ? style.danger : style.none}>
+            {errors.height}
           </p>
         </div>
         <div>
@@ -180,9 +243,15 @@ function onTempSelected(temp){
         />
         <p className={errors.url ? style.danger : style.none}>{errors.url}</p>
         Temperaments
-        <Temperaments onSelect={onTempSelected} tempers={[{name: "Bonito", id: 1}, {name: "Feliz", id: 2}]}/>
+        <Temperaments
+          state={state}
+          onSelect={onTempSelected}
+          onUnselect={onTempUnselected}
+        />
+          <div onClick={handleOnSubmit} className={style.buttonCreate}>
+        <i class="fas fa-pencil-alt"></i><h3 className={style.create}>¡CREATE!</h3>
+          </div>
       </div>
-      <button>¡CREATE!</button>
     </form>
   );
 }

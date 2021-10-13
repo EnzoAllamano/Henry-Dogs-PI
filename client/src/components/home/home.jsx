@@ -9,8 +9,9 @@ import Filters from "../filter/filter";
 
 export default function Home() {
   const dispatch = useDispatch();
-  
+  const dogsRedux = useSelector(state => state.dogs)
   useEffect(() => {
+    if(!dogsRedux[0])
     dispatch(getAllDogs());
   }, []);
 

@@ -6,6 +6,7 @@
   object-fit: cover;
   border-bottom: 1px solid var(--border-color1);
   object-position:top;
+  min-height: 225px;
 }
 
 .h1DogName{
@@ -21,6 +22,7 @@
   list-style: none;
   cursor: pointer;
 }
+
 details summary:focus {
   outline: none;
 }

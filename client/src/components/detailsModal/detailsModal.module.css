@@ -3,15 +3,17 @@
     width: 50%;
   }
   .detailsModal {
+    max-width: 700px;
+    width: 60%;
     padding: 15px;
     background: var(--containers-background);
-    border-radius: 0.5em;
+    border-radius: 20px;
     box-shadow: 0 10px 10px var(--border-color1);
     left: 50%;
-    pointer-events: none;
-    position: fixed;
     top: 50%;
+    position: fixed;
     transform: translate(-50%, -50%);
+    pointer-events: none;
     text-align: left;
     display: flex;
     flex-direction: column;
@@ -20,13 +22,14 @@
   
   .detailsModal .detailsModalTitle {
     color: var(--font-color1);
-    padding: 1.5em 2em;
+    padding: 10px;
     pointer-events: all;
     position: relative;
-    width: calc(100% - 4.5em);
+    width: 100%;
   }
   .detailsModal .detailsModalTitle h1 {
-    font-size: 1.25rem;
+    font-size: 25px;
+    text-align: center;
     font-weight: 600;
     line-height: normal;
   }
@@ -40,6 +43,9 @@
   .ulAdvancedInfo{
     margin: 10px;
     list-style: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
   }
   
   .ul{

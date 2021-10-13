@@ -24,3 +24,8 @@
     align-self: flex-end;
     justify-self:right;
 }
+
+.floatingTemps{
+    position: absolute;
+    transform: translate(0%, 50%);
+}
