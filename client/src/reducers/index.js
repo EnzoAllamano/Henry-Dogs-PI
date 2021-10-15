@@ -8,7 +8,7 @@ const initialState = {
   darkMode: false,
 };
 
-export var dogsPerPage = 40;
+export var dogsPerPage = 8;
 
 function sliceArray(page, dogs) {
   if (page * dogsPerPage > dogs.length)
@@ -125,7 +125,8 @@ function rootReducer(state = initialState, action) {
         dogs: payload,
         allDogs: payload,
         auxDogs: [].concat(payload),
-        dogsActualPage: sliceArray(state.actualPage, payload),
+        actualPage: 1,
+        dogsActualPage: sliceArray(1, payload),
       };
     }
     case "SEARCH_DOGS": {
@@ -136,7 +137,7 @@ function rootReducer(state = initialState, action) {
         actualPage: 1,
         dogs: payload,
         allDogs: payload,
-        dogsActualPage: sliceArray(state.actualPage, payload),
+        dogsActualPage: sliceArray(1, payload),
       };
     }
     case "LOADING":{

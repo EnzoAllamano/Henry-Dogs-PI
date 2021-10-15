@@ -58,7 +58,7 @@ function clearAllFilters(){
 
   return (
     <div className={style.divContainer}>
-      <button onClick={clearAllFilters}><i class="fas fa-trash-alt"></i></button>
+      <button onClick={clearAllFilters}><i className="fas fa-trash-alt"></i></button>
       <button id="DB" onClick={(element) => handleOnClickFilter(element)}>
       <i className={sorter.filterParam ? "fas fa-cloud" : "fas fa-database"}></i> {/*True es DB */ }
       </button>
@@ -70,7 +70,7 @@ function clearAllFilters(){
       <button id="weight" onClick={(element) => handleOnClickSort(element)}>
       <i className={sorter.sortParam === "weight" && sorter.sortDirection ? "fas fa-weight-hanging" : "fas fa-feather"}></i>
       </button>
-      <button onClick={() => setShow(!show)}><i class="fas fa-filter"></i></button>
+      <button onClick={() => setShow(!show)}><i className="fas fa-filter"></i></button>
       {show ? (
         <div className={style.floatingTemps}>
           <Temperaments
