@@ -11,18 +11,41 @@
     color: var(--font-color1);
     text-transform: uppercase;
     cursor: pointer;
-    font-size: 22px;
-    padding: 4px 8px;
-    border-radius: 20px;
+    font-size: 28px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
     border: 1px solid var(--border-color1);
     background-color: var(--button-color1);
 }
 
+.divContainer button:hover{
+    animation: chucChuc 500ms 1;
+}
+
+@keyframes chucChuc {
+    0%{
+        transform: rotate(0deg);
+    }
+    20%{
+        transform: rotate(20deg);
+    }
+    40%{
+        transform: rotate(-20deg);
+    }
+    60%{
+        transform: rotate(-10deg);
+    }
+    80%{
+        transform: rotate(10deg);
+    }
+}
 .divContainer i{
     font-size: 26px;
     color: var(--font-color1);
     align-self: flex-end;
     justify-self:right;
+    pointer-events: none;
 }
 
 .floatingTemps{

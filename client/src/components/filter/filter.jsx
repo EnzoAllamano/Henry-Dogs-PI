@@ -1,75 +1,85 @@
 import React, { useState } from "react";
 import style from "./filter.module.css";
-import { useDispatch,useSelector } from "react-redux";
-import { clearFilters, filterByTemperaments, filterDogs, sortDogs, switchDark } from "../../actions";
-import Temperaments from '../temperaments/temperaments.jsx'
+import { useDispatch } from "react-redux";
+import {
+  clearFilters,
+  filterByTemperaments,
+  filterDogs,
+  sortDogs,
+} from "../../actions";
+import Temperaments from "../temperaments/temperaments.jsx";
 
-
+var sorter = {
+  sortDirection: true,
+  sortParam: "name",
+  filterParam: true
+};
 export default function Filters() {
   const dispatch = useDispatch();
-const [selectedTemps, setSelectedTemps] = useState({temps: []})
-const [show, setShow] = useState(false)
-  var sorter = {
-    sortDirection: 1,
-    sortParam: "name",
-  };
+  const [selectedTemps, setSelectedTemps] = useState({ temps: [] });
+  const [show, setShow] = useState(false);
 
-function handleOnClickFilter(element){
-  dispatch(filterDogs(element.target.id === "DB" ? true : false))
-}
+  function handleOnClickFilter() {
+    sorter.filterParam = !sorter.filterParam
+    dispatch(filterDogs(sorter.filterParam)); // True para DB, false para API
+  }
 
-function onTempSelected(temp){
-  setShow(false)
-  setSelectedTemps({temps: [...selectedTemps.temps, temp]})
-  dispatch(filterByTemperaments([...selectedTemps.temps, temp]))
-}
+  function onTempSelected(temp) {
+    setShow(false);
+    setSelectedTemps({ temps: [...selectedTemps.temps, temp] });
+    dispatch(filterByTemperaments([...selectedTemps.temps, temp]));
+  }
 
-function onTempUnselected(temp){
-  setSelectedTemps({temps: selectedTemps.temps.filter(t => t.id !== temp.id)}) // Quita el temperamento pasado buscandolo por id
-  dispatch(filterByTemperaments(selectedTemps.temps.filter(t => t.id !== temp.id))) // Filtra nuevamente
-}
+  function onTempUnselected(temp) {
+    setSelectedTemps({
+      temps: selectedTemps.temps.filter((t) => t.id !== temp.id),
+    }); // Quita el temperamento pasado buscandolo por id
+    dispatch(
+      filterByTemperaments(selectedTemps.temps.filter((t) => t.id !== temp.id))
+    ); // Filtra nuevamente
+  }
 
   function handleOnClickSort(element) {
     // Si ya se había ordenado por nombre, se ordena al revés
-    if(element.target.id === sorter.sortParam) sorter.sortDirection = sorter.sortDirection * -1
+    if (element.target.id === sorter.sortParam)
+      sorter.sortDirection = !sorter.sortDirection;
     // Siempre se ordena ascendentemente la primera vez
-    else {sorter.sortDirection = 1; sorter.sortParam = element.target.id} 
-    element.target.innerHTML = sorter.sortDirection === 1 ? element.target.id + "🢁" : element.target.id + "🢃"
+    else {
+      sorter.sortDirection = true;
+      sorter.sortParam = element.target.id;
+    }
     dispatch(sortDogs(sorter));
   }
-  return (
 
+function clearAllFilters(){
+  setSelectedTemps({temps: []})
+  dispatch(clearFilters())
+}
+
+  return (
     <div className={style.divContainer}>
-      <button
-        onClick={() => dispatch(clearFilters())}
-      >
-        Clear
+      <button onClick={clearAllFilters}><i class="fas fa-trash-alt"></i></button>
+      <button id="DB" onClick={(element) => handleOnClickFilter(element)}>
+      <i className={sorter.filterParam ? "fas fa-cloud" : "fas fa-database"}></i> {/*True es DB */ }
       </button>
-      <button
-        onClick={(element) => handleOnClickFilter(element)}
-      >
-        APIDogs
+      <button id="name" onClick={(element) => handleOnClickSort(element)}>
+        {/*Si está en name y verdadero significa alfabéticamente */ }
+      <i className={sorter.sortParam === "name" && sorter.sortDirection ? "fas fa-sort-alpha-down-alt" : "fas fas fa-sort-alpha-down"}></i>
       </button>
-      <button
-      id="DB"
-        onClick={(element) => handleOnClickFilter(element, )}
-      >
-        DBDogs
+      {/*Si está en weight y verdadero significa menor a mayor */ }
+      <button id="weight" onClick={(element) => handleOnClickSort(element)}>
+      <i className={sorter.sortParam === "weight" && sorter.sortDirection ? "fas fa-weight-hanging" : "fas fa-feather"}></i>
       </button>
-      <button
-      id="name"
-        onClick={(element) => handleOnClickSort(element, "name")}
-      >
-        NAME🢁
-      </button>
-      <button
-      id="weight"
-        onClick={(element) => handleOnClickSort(element, "weight")}
-      >
-        WEIGHT🢁
-      </button>
-      <button onClick={()=> setShow(!show)}>Filter by temperaments</button>
-      {show? <div className= {style.floatingTemps}><Temperaments state={selectedTemps} onSelect={onTempSelected} onUnselect={onTempUnselected}/> </div>: undefined}
+      <button onClick={() => setShow(!show)}><i class="fas fa-filter"></i></button>
+      {show ? (
+        <div className={style.floatingTemps}>
+          <Temperaments
+            state={selectedTemps}
+            onSelect={onTempSelected}
+            onUnselect={onTempUnselected}
+          />{" "}
+        </div>
+      ) : undefined}
     </div>
   );
 }

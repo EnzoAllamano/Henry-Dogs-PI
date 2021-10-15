@@ -3,7 +3,7 @@ const axios = require("axios");
 const { API_KEY } = process.env;
 const { Dog, Temperament } = require("../db.js");
 const { Sequelize } = require("sequelize");
-const { Op } = require("sequelize")
+const { Op } = require("sequelize");
 
 function repairAPIBugs(dogs) {
   dogs.forEach((breed) => {
@@ -19,12 +19,12 @@ function repairAPIBugs(dogs) {
       if (splitedWeight[0].includes("–"))
         breed.weight.imperial = breed.weight.imperial.replace("–", "-");
       else breed.weight.imperial = `${splitedWeight[0]} - ${splitedWeight[0]}`;
+    } else {
+      if (isNaN(parseInt(splitedWeight[0])))
+        breed.weight.imperial = `${splitedWeight[1]} - ${splitedWeight[1]}`;
+      if (isNaN(parseInt(splitedWeight[1])))
+        breed.weight.imperial = `${splitedWeight[0]} - ${splitedWeight[0]}`;
     }
-
-    if (isNaN(parseInt(splitedWeight[0])))
-      breed.weight.imperial = `${splitedWeight[1]} - ${splitedWeight[1]}`;
-    if (isNaN(parseInt(splitedWeight[1])))
-      breed.weight.imperial = `${splitedWeight[0]} - ${splitedWeight[0]}`;
   });
   return dogs;
 }
@@ -37,9 +37,9 @@ function getAPIDogs(name) {
     : axios.get(`https://api.thedogapi.com/v1/breeds?api_key=${API_KEY}`);
 }
 
-function getDBDogDetails(id){
+function getDBDogDetails(id) {
   return Dog.findAll({
-    where: {id},
+    where: { id },
     include: [{ model: Temperament, attributes: ["name"] }],
     through: {
       attributes: [],
@@ -47,13 +47,11 @@ function getDBDogDetails(id){
   });
 }
 
-function getDBDogs(name) {
-  let where = name !== undefined ? {name:
-    {[Op.like]: `%${name}%`}
-  } : {}
+function getDBDogs(name) { // Dogs con solo atributos necesarios
+  let where = name !== undefined ? { name: { [Op.like]: `%${name}%` } } : {};
   return Dog.findAll({
     where,
-    attributes: ["id", "name", "weight", "height", "image"],
+    attributes: ["id", "name", "weight", "image"],
     include: [{ model: Temperament, attributes: ["name"] }],
     through: {
       attributes: [],
@@ -92,13 +90,13 @@ appDogs.get("/", async (req, res) => {
 
 appDogs.get("/:idRaza", async (req, res) => {
   const { idRaza } = req.params;
-  let DBDogs
+  let DBDogs;
   try {
-    if(idRaza.length > 4) DBDogs = await getDBDogDetails( idRaza );
-    if (DBDogs && DBDogs.length)  return res.send(DBDogs[0]);
+    if (idRaza.length > 4) DBDogs = await getDBDogDetails(idRaza);
+    if (DBDogs && DBDogs.length) return res.send(DBDogs[0]);
     else {
       let APIDogs = await getAPIDogs(undefined);
-      APIDogs = APIDogs.data
+      APIDogs = APIDogs.data;
       const dogFound = APIDogs.find((d) => d.id == idRaza);
       dogFound ? res.send(dogFound) : res.status(405);
     }
@@ -107,18 +105,19 @@ appDogs.get("/:idRaza", async (req, res) => {
   }
 });
 
-function capitalize(name){
-  return name ? name[0].toUpperCase() + name.slice(1, name.length) : ""
+function capitalize(name) {
+  return name ? name[0].toUpperCase() + name.slice(1, name.length) : "";
 }
 
 appDogs.post("/create", async (req, res) => {
-  let { breed, minW, maxW, minH, maxH, minL, maxL, temps, url, bredF, origin,  } = req.body;
+  let { breed, minW, maxW, minH, maxH, minL, maxL, temps, url, bredF, origin } =
+    req.body;
   let name = capitalize(breed),
-  life_span = `${minL} - ${maxL}`,
+    life_span = `${minL} - ${maxL}`,
     weight = { imperial: `${minW} - ${maxW}` },
     height = { imperial: `${minH} - ${maxH}` },
     image = { url },
-    bred_for = bredF
+    bred_for = bredF;
   try {
     const [dogs, created] = await Dog.findOrCreate({
       where: {
@@ -128,14 +127,14 @@ appDogs.post("/create", async (req, res) => {
         life_span,
         image,
         bred_for,
-        origin
+        origin,
       },
     });
     let temperamentsIDs = temps.map((t) => parseInt(t.id));
     dogs.addTemperaments(temperamentsIDs);
-    res.send({msg: "Breed correctly created"})
+    res.send({ msg: "Breed correctly created" });
   } catch (error) {
-    res.send({msg: "Error during creation " + error});
+    res.send({ msg: "Error during breed creation", error });
   }
 });
 

@@ -47,6 +47,10 @@
     flex-direction: column;
     justify-content: space-evenly;
   }
+
+  .ulAdvancedInfo li{
+    color: var(--font-color1)
+  }
   
   .ul{
     list-style: none;
@@ -69,3 +73,16 @@
     pointer-events: all;
   }
   
+  @media (max-width: 1100px){
+    .detailsModal{
+      display: flex;
+      flex-direction: column;
+    }
+    .advancedDetails{
+      display: flex;
+      flex-direction: column;
+    }
+    .imgDetails{
+      width: 100%;
+    }
+  }

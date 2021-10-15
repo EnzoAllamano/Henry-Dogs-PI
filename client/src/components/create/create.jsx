@@ -6,20 +6,22 @@ import { useDispatch } from "react-redux";
 import Temperaments from "../temperaments/temperaments.jsx";
 import { getAllDogs } from "../../actions";
 
+const initialState ={
+  breed: "",
+  minW: "",
+  maxW: "",
+  minH: "",
+  maxH: "",
+  minL: "",
+  maxL: "",
+  bredF: "",
+  origin: "",
+  url: "",
+  temps: [],
+}
+
 export default function Create() {
-  const [state, setState] = useState({
-    breed: "",
-    minW: "",
-    maxW: "",
-    minH: "",
-    maxH: "",
-    minL: "",
-    maxL: "",
-    bredF: "",
-    origin: "",
-    url: "",
-    temps: [],
-  });
+  const [state, setState] = useState(initialState);
   const [errors, setErrors] = useState({
     breed: "",
     weight: "",
@@ -34,86 +36,89 @@ export default function Create() {
     let value = e.target.value;
     switch (e.target.name) {
       case "breed": {
-        if (value === "") setErrors({ breed: "Breed Name cannot be empty" });
+        if (value === "") setErrors({...errors, breed: "Breed Name cannot be empty" });
         else if (value.match(/([0-9])+/))
-          setErrors({ breed: "Breed Name cannot contain numbers" });
+          setErrors({...errors, breed: "Breed Name cannot contain numbers" });
         else if (value.length > 35)
-          setErrors({
+          setErrors({...errors,
             breed: "Breed Name cannot exceed 35 caracters",
           });
-        else setErrors({ breed: undefined });
+        else setErrors({...errors, breed: undefined });
         break;
       }
 
       case "minL":{
-        if(value === "") setErrors({ life: "Min life cannot be empty" });
+        if(value === "") setErrors({...errors, life: "Min life cannot be empty" });
         else if (!value.toLowerCase().match(/^[0-9]+$/))
-        setErrors({ life: "Life cannot have not numeric characters" });
+        setErrors({...errors, life: "Life cannot have not numeric characters" });
         break;
       }
 
       case "maxL": {
-        if(value === "") setErrors({ life: "Max life cannot be empty" });
+        if(value === "") setErrors({...errors, life: "Max life cannot be empty" });
         else if (!value.toLowerCase().match(/^[0-9]+$/))
-        setErrors({ life: "Life cannot have not numeric characters" });
+        setErrors({...errors, life: "Life cannot have not numeric characters" });
         break;
       }
       case "minW": {
-        if (value === "") setErrors({ weight: "Min weight cannot be empty" });
+        if (value === "") setErrors({...errors, weight: "Min weight cannot be empty" });
         else if (!value.toLowerCase().match(/^[0-9]+$/))
-          setErrors({ weight: "Weight cannot have not numeric characters" });
+          setErrors({...errors, weight: "Weight cannot have not numeric characters" });
         else if (value <= 0)
-          setErrors({ weight: "Min weight cannot be 0 or lower" });
+          setErrors({...errors, weight: "Min weight cannot be 0 or lower" });
         else if (value > 500)
-          setErrors({ weight: "Min weight value is too high!" });
-        else setErrors({ weight: undefined });
+          setErrors({...errors, weight: "Min weight value is too high!" });
+        else setErrors({...errors, weight: undefined });
         break;
       }
 
       case "maxW": {
-        if (value === "") setErrors({ weight: "Max weight cannot be empty" });
+        if (value === "") setErrors({...errors, weight: "Max weight cannot be empty" });
         else if (value <= 0)
-          setErrors({ weight: "Max weight cannot be 0 or lower" });
+          setErrors({...errors, weight: "Max weight cannot be 0 or lower" });
         else if (!value.toLowerCase().match(/^[0-9]+$/))
-          setErrors({ weight: "Weight cannot have not numeric characters" });
+          setErrors({...errors, weight: "Weight cannot have not numeric characters" });
         else if (value > 500)
-          setErrors({ weight: "Max weight value is too high!" });
+          setErrors({...errors, weight: "Max weight value is too high!" });
         else if (value < state.minW)
-          setErrors({
+          setErrors({...errors,
             weight: "Max weight should be lower than Min weight",
           });
-        else setErrors({ weight: undefined });
+        else setErrors({...errors, weight: undefined });
         break;
       }
 
       case "minH": {
-        if (value === "") setErrors({ height: "Min height cannot be empty" });
+        if (value === "") setErrors({...errors, height: "Min height cannot be empty" });
         else if (value <= 0)
-          setErrors({ height: "Min height cannot be 0 or lower" });
+          setErrors({...errors, height: "Min height cannot be 0 or lower" });
         else if (!value.toLowerCase().match(/^[0-9]+$/))
-          setErrors({ height: "Height cannot have not numeric characters" });
-        else setErrors({ height: undefined });
+          setErrors({...errors, height: "Height cannot have not numeric characters" });
+        else setErrors({...errors, height: undefined });
         break;
       }
 
       case "maxH": {
-        if (value === "") setErrors({ height: "Max height cannot be empty" });
+        if (value === "") setErrors({...errors, height: "Max height cannot be empty" });
         else if (value <= 0)
-          setErrors({ height: "Max height cannot be 0 or lower" });
+          setErrors({...errors, height: "Max height cannot be 0 or lower" });
         else if (!value.toLowerCase().match(/^[0-9]+$/))
-          setErrors({ height: "Height cannot have not numeric characters" });
+          setErrors({...errors, height: "Height cannot have not numeric characters" });
         else if (value < state.minH)
-          setErrors({
+          setErrors({...errors,
             height: "Max height should be lower than Min weight",
           });
-        else setErrors({ height: undefined });
+        else setErrors({...errors, height: undefined });
         break;
       }
 
       case "url": {
-        if (value === "") setErrors({ url: "Image shouldn't be empty" });
-        else setErrors({ url: undefined });
+        if (value === "") setErrors({...errors, url: "Image shouldn't be empty" });
+        else setErrors({...errors, url: undefined });
         break;
+      }
+      default:{
+        break
       }
     }
     setState({ ...state, [e.target.name]: e.target.value });
@@ -126,16 +131,25 @@ export default function Create() {
 
   async function handleOnSubmit(e) {
     e.preventDefault();
-    let emptyFields = false
+    let emptyFields = false, hasErrors = false
     Object.keys(state).forEach((key) => {
       if (state[key].length === 0) {
         emptyFields = true
       return
     };
     })
+    Object.keys(errors).forEach((key) => {
+      if(errors[key]) {
+        hasErrors = true
+        return
+      }
+    })
     if(emptyFields) {
       alert("All the fields must be complete");
       return;
+    }
+    if(hasErrors){
+      alert("There are some errors in the input")
     }
     let res = await fetch("/dogs/create", {
       method: "POST",
@@ -144,6 +158,8 @@ export default function Create() {
     });
     res = await res.json();
     alert(res.msg);
+    if(!res.error) setState(initialState)
+    else return
     dispatch(getAllDogs());
   }
   function onTempUnselected(temp) {
@@ -151,10 +167,9 @@ export default function Create() {
   }
 
   return (
-    <form onSubmit={handleOnSubmit} className={styleCards.mainDiv}>
+    <form onSubmit={handleOnSubmit} className={styleCards.mainDiv} autoComplete="off">
       <div className={style.inputContainer}>
         <input
-          value={state.breed}
           placeholder="Breed"
           name="breed"
           onChange={handleOnChange}
@@ -242,7 +257,7 @@ export default function Create() {
           placeholder="Image URL"
         />
         <p className={errors.url ? style.danger : style.none}>{errors.url}</p>
-        Temperaments
+        <h2>Temperaments</h2>
         <Temperaments
           state={state}
           onSelect={onTempSelected}

@@ -5,7 +5,7 @@ import style from './loading.module.css'
 
 export default function Loading(){
     return (
-        <div class={`${styleLoading.detailsModal} ${style.container}`}>
+        <div className={`${styleLoading.detailsModal} ${style.container}`}>
             <h1>Loading</h1>
             <img className = {style.imgLoading} alt = "loading" src = {loadingImage}/>
         </div>

@@ -8,16 +8,15 @@ import { useSelector } from "react-redux";
 import Create from "./components/create/create.jsx";
 
 function App() {
-  let expr = new RegExp("[/].+");
   const darkMode = useSelector((state) => state.darkMode);
 
   return (
     <div className={`${style.app} ${darkMode ? style.dark : style.light}`}>
-      <Route path={expr} component={Nav} />
+      <Route path={/[/].+/} component={Nav} />
       <Route path="/create" component={Create} />
       <Route exact path="/" component={Landing} />
       <Route exact path="/home" component={Home} />
-      <Route path={expr} component={Footer} />
+      <Route path={/[/].+/} component={Footer} />
     </div>
   );
 }

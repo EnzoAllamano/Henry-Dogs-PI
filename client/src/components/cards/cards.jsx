@@ -11,11 +11,9 @@ export default function Cards() {
   const dogsRedux = useSelector((state) => state.dogsActualPage);
 
   const generateDogsCards = function () {
-    return dogsRedux.length ? (
+    return dogsRedux[0] && dogsRedux[0].loading ? <Loading></Loading> : dogsRedux.length ? (
       dogsRedux.map((d) => <Card dog={d} key={d.id} />)
-    ) : (
-      <Loading></Loading>
-    );
+    ) : <h1>There are no results</h1>
   };
 
   return (

@@ -15,7 +15,7 @@ export default function Pages() {
       left: 0,
       behavior: 'smooth'
     });
-    dispatch(changePage(element.target.id));
+    dispatch(changePage(parseInt(element.target.id)));
   }
 
   function buttonsPages(actualP) {
@@ -33,11 +33,11 @@ export default function Pages() {
       if(i >= totalPages - 1) continue
       thisNPage = actualP - i;
       res.push(
-        <li
+        <li key = {thisNPage}
           onClick={onClickPage}
           id={thisNPage}
           style={
-            actualPage == thisNPage // actualPage es el valor de Redux, thisNPage es el valor calculado a mostrar
+            actualPage === thisNPage // actualPage es el valor de Redux, thisNPage es el valor calculado a mostrar
               ? { backgroundColor: "var(--active-button1)" } // El número de página seleccionado se colorea más oscuro
               : {  }
           }

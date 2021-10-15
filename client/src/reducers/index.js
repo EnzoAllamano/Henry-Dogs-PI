@@ -1,8 +1,9 @@
 const initialState = {
   dogs: [], // Todos las razas
+  allDogs: [], // Un array con la búsqueda original, al ser distintas que auxDogs necesito otra variable
   auxDogs: [], // Necesario para no perder las razas originales y no tener que hacer un fetch nuevamente a breeds
   dogDetail: {}, // Details dog por id
-  dogsActualPage: [], // subArray de dogs, los mostrados en la página actual
+  dogsActualPage: [{loading: true}], // subArray de dogs, los mostrados en la página actual
   actualPage: 1,
   darkMode: false,
 };
@@ -16,20 +17,33 @@ function sliceArray(page, dogs) {
 }
 
 function sortDogsName(sortDirection, dogs) {
-  return dogs.sort((a, b) => {
-    if (a.name < b.name) return -1 * sortDirection;
-    if (a.name > b.name) return 1 * sortDirection;
-    if (a.name === b.name) return 0;
-  });
+  return sortDirection // Si es true ordena ascendentemente
+    ? dogs.sort((a, b) => {
+        if (a.name < b.name) return -1;
+        else if (a.name > b.name) return 1;
+        else return 0;
+      })
+    : dogs.sort((a, b) => {
+        if (a.name < b.name) return 1;
+        else if (a.name > b.name) return -1;
+        else return 0;
+      });
 }
 
 function sortDogsWeight(sortDirection, dogs) {
-  return dogs.sort((dogA, dogB) => {
+  return sortDirection ?
+  dogs.sort((dogA, dogB) => {
     let [promA, promB] = [dogA, dogB]
       .map((e) => e.weight.imperial.split(" - ")) // Mapeo [Dog1, Dog2] -> Dog: { Weight: { Imperial:  "pesoMin - pesoMax" }} Y me da [[minA, maxA], [minB, maxB]]
       .map((e) => (parseInt(e[0]) + parseInt(e[1])) / 2); // Ahora mapeo [[minA, maxA], [minB, maxB]] -> [promA, promB]
-    return sortDirection * promA <= promB ? -1 : 1; // Sort direction invierte el ordenamiento cuando es -1
-  });
+    return promA <= promB ? -1 : 1; 
+  }): 
+  dogs.sort((dogA, dogB) => {
+    let [promA, promB] = [dogA, dogB]
+      .map((e) => e.weight.imperial.split(" - ")) // Mapeo [Dog1, Dog2] -> Dog: { Weight: { Imperial:  "pesoMin - pesoMax" }} Y me da [[minA, maxA], [minB, maxB]]
+      .map((e) => (parseInt(e[0]) + parseInt(e[1])) / 2); // Ahora mapeo [[minA, maxA], [minB, maxB]] -> [promA, promB]
+    return promA <= promB ? 1 : -1; 
+  })
 }
 
 function setImg(auxDogs, searchDogs) {
@@ -39,13 +53,18 @@ function setImg(auxDogs, searchDogs) {
   let auxDogsArr = [];
   auxDogs.forEach((dog) => (auxDogsArr[dog.id] = dog));
   // Ahora por cada raza nueva que haya llegado le asigno la image.url que tiene la raza correspondiente en su id del arreglo auxDogsArr
-  searchDogs.forEach(
-    (dog) =>{
-      if(dog.image && dog.image.url && dog.image.url.match(/(png$)|(jpg$)|(jpeg$)/))
-    dog.image = {
-        url: auxDogsArr[dog.id] ? auxDogsArr[dog.id].image.url : "https://eventovirtual.co/wp-content/themes/appon/assets/images/no-image/No-Image-Found-400x264.png",
-      }}
-  );
+  searchDogs.forEach((dog) => {
+    if (
+      dog.image &&
+      dog.image.url &&
+      dog.image.url.match(/(png$)|(jpg$)|(jpeg$)/)
+    )
+      dog.image = {
+        url: auxDogsArr[dog.id]
+          ? auxDogsArr[dog.id].image.url
+          : "https://eventovirtual.co/wp-content/themes/appon/assets/images/no-image/No-Image-Found-400x264.png",
+      };
+  });
   return searchDogs;
 }
 
@@ -76,9 +95,9 @@ function filterDogs(dogs, filterDBOnly) {
 
 function filterByTemperaments(dogs, temps) {
   let tempsString = temps.map((t) => t.name),
-    res
+    res;
   return dogs.filter((d) => {
-    res = true
+    res = true;
     tempsString.forEach((temp) => {
       res = res && d.temperament.includes(temp);
     });
@@ -92,7 +111,8 @@ function rootReducer(state = initialState, action) {
       let payload;
       if (action.payload.id.toString().length > 4)
         payload = formatSingleDog(action.payload);
-      else if(action.payload.id.toString().length <= 4) payload = action.payload;
+      else if (action.payload.id.toString().length <= 4)
+        payload = action.payload;
       return {
         ...state,
         dogDetail: payload,
@@ -103,6 +123,7 @@ function rootReducer(state = initialState, action) {
       return {
         ...state,
         dogs: payload,
+        allDogs: payload,
         auxDogs: [].concat(payload),
         dogsActualPage: sliceArray(state.actualPage, payload),
       };
@@ -114,8 +135,15 @@ function rootReducer(state = initialState, action) {
         ...state,
         actualPage: 1,
         dogs: payload,
+        allDogs: payload,
         dogsActualPage: sliceArray(state.actualPage, payload),
       };
+    }
+    case "LOADING":{
+      return {
+        ...state,
+        dogsActualPage: [{loading:true}]
+      }
     }
     case "CHANGE_PAGE": {
       return {
@@ -138,6 +166,7 @@ function rootReducer(state = initialState, action) {
     }
     case "LAST_PAGE": {
       let calculatedPage = Math.ceil(state.dogs.length / dogsPerPage);
+      if(calculatedPage === 0) calculatedPage = 1
       return {
         ...state,
         actualPage: calculatedPage,
@@ -148,18 +177,18 @@ function rootReducer(state = initialState, action) {
       let { sortParam, sortDirection } = action.payload,
         sortedDogs;
       if (sortParam === "name")
-        sortedDogs = sortDogsName(sortDirection, state.dogs);
+        sortedDogs = sortDogsName(sortDirection, [...state.dogs]);
       if (sortParam === "weight")
-        sortedDogs = sortDogsWeight(sortDirection, state.dogs);
+        sortedDogs = sortDogsWeight(sortDirection, [...state.dogs]);
       return {
         ...state,
         dogs: sortedDogs,
         dogsActualPage: sliceArray(1, sortedDogs),
-        actualPage: 1
+        actualPage: 1,
       };
     }
     case "FILTER_DOGS": {
-      let filteredDogs = filterDogs(state.dogs, action.payload);
+      let filteredDogs = filterDogs([...state.allDogs], action.payload);
       return {
         ...state,
         dogs: filteredDogs,
@@ -170,13 +199,13 @@ function rootReducer(state = initialState, action) {
     case "CLEAR_FILTERS": {
       return {
         ...state,
-        dogs: [...state.auxDogs],
-        dogsActualPage: sliceArray(1, state.auxDogs),
+        dogs: [...state.allDogs],
+        dogsActualPage: sliceArray(1, [...state.allDogs]),
         actualPage: 1,
       };
     }
     case "FILTER_BY_TEMPERAMENTS": {
-      let filteredDogs = filterByTemperaments([...state.dogs], action.payload);
+      let filteredDogs = filterByTemperaments([...state.allDogs], action.payload);
       return {
         ...state,
         dogs: filteredDogs,

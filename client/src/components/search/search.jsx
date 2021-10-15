@@ -2,7 +2,7 @@ import React from "react";
 import style from "./search.module.css";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { searchDogs } from "../../actions/index.js";
+import { searchDogs, startLoading } from "../../actions/index.js";
 
 export default function Search() {
   const dispatch = useDispatch();
@@ -10,7 +10,9 @@ export default function Search() {
   function handleOnSubmit(e) {
     e.preventDefault();
     e.target.value = "";
+    dispatch(startLoading())
     dispatch(searchDogs(name));
+    setName("")
   }
 
   function handleOnChange(e) {
@@ -21,7 +23,7 @@ export default function Search() {
 
   return (
     <form onSubmit={handleOnSubmit} className={style.divContainer}>
-      <input onChange={handleOnChange} placeholder="Search a dog breed" ></input>
+      <input onChange={handleOnChange} value={name} placeholder="Search a dog breed" ></input>
       <button type="submit">
         Buscar
       </button>

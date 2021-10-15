@@ -15,13 +15,13 @@ const darkMode = useSelector(state => state.darkMode)
         <h1 className={style.h1Title}> HENRY DOGS</h1>
         <h3 className={style.h3Quote}>{randomQuote()}</h3>
         <Link to="/home">
-          <button className={style.buttonEnter}><i class="fas fa-paw"></i><span>¡ENTER!</span></button>
+          <button className={style.buttonEnter}><i className="fas fa-paw"></i><span>¡ENTER!</span></button>
         </Link>
       </div>
       <div className={style.divDog}>
         <img alt="a happy dog" className={style.imgDog} src={img} />
       </div>
-      <button className={style.darkMode} onClick={() => dispatch(switchDark())}>{darkMode ? <i class="fas fa-sun"></i> : <i class="fas fa-moon"></i>}</button>
+      <button className={style.darkMode} onClick={() => dispatch(switchDark())}>{darkMode ? <i className="fas fa-sun"></i> : <i className="fas fa-moon"></i>}</button>
     </div>
   );
 

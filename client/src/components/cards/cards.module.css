@@ -7,6 +7,9 @@
     align-items: flex-start;
     width: 100%;
 }
+.ulContainer h1{
+    color: var(--font-color1);
+}
 
 @media (max-width: 805px){
     .divContainer{padding: 0px;

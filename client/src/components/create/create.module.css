@@ -7,8 +7,14 @@
     margin-top: 20px;
 }
 
+.inputContainer h2{
+    color: var(--font-color1)
+}
+
 .inputContainer input{
     font-size: 20px;
+    background-color: var(--button-color1);
+    color: var(--font-color1);
 }
 
 .inputContainer button{
@@ -36,6 +42,7 @@
     width: 105px;
     height: 50px;
     overflow: hidden;
+    margin-bottom: 20px;
 }
 
 .buttonCreate h3{

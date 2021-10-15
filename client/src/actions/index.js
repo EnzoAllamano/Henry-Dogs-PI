@@ -83,3 +83,9 @@ export function filterByTemperaments(temps){
     payload: temps
   }
 }
+
+export function startLoading(){
+  return{
+    type: "LOADING"
+  }
+}
